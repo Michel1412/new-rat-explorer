@@ -3,7 +3,10 @@ import { File } from '../../domain/entities/File';
 import { Result } from '../../domain/shared/Result';
 
 export class CreateFileUseCase {
-  constructor(private tree: Tree) {}
+
+  constructor(
+    private tree: Tree
+  ) {}
 
   execute(name: string, path: string, extension: string) {
     const file = new File(name, path, extension);
