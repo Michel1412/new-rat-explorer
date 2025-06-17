@@ -1,10 +1,12 @@
+import { File } from "./File";
+
 export class Folder {
 
-  public readonly leafs: Map<string, Folder | import('./File').File> = new Map();
+  public readonly leafs: Map<string, Folder | File> = new Map();
 
   constructor(
-    public readonly name: string,
-    public readonly path: string
+    public name: string,
+    public path: string
   ) {}
   
 }

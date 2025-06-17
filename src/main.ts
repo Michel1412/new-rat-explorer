@@ -24,16 +24,20 @@ function mainMenu() {
     switch (answer.trim()) {
       case '1':
         PromptService.printFolder(tree.getRoot());
+
         rl.close();
         mainMenu();
         break;
       case '2':
         rl.question('Nome do arquivo: ', (name: string) => {
           rl.question('Caminho (ex: /): ', (path: string) => {
-            rl.question('Extensão: ', (ext: string) => {
-              createFile.execute(name, path, ext);
-              storage.save(tree);
+            rl.question('Extensão: ', async (ext: string) => {
+              const newTree = await createFile.execute(name, path, ext);
+
+              console.log(`[main] tree: ${JSON.stringify(newTree)}`);
+              storage.save(newTree);
               console.log('Arquivo criado!');
+  
               rl.close();
               mainMenu();
             });
@@ -47,6 +51,7 @@ function mainMenu() {
         break;
       default:
         console.log('Opção inválida.');
+              
         rl.close();
         mainMenu();
     }

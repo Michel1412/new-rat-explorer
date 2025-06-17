@@ -8,10 +8,15 @@ export class CreateFileUseCase {
     private tree: Tree
   ) {}
 
-  execute(name: string, path: string, extension: string) {
-    const file = new File(name, path, extension);
-    // Aqui você pode adicionar lógica para inserir na árvore
-    // Exemplo: this.tree.addFile(file)
-    return Result.ok(file);
+  async execute(name: string, path: string, extension: string) {
+    if (!name && !path && extension) {
+      throw new Error(`[CreateFileUseCase] Parametros invalidos para Criar um Arquivo`);
+    }
+
+    const isSaved = await this.tree.addFile(path, new File(name, path, extension));
+
+    console.log(`[CreateFileUseCase] execute: ${JSON.stringify(this.tree)}`);
+    console.log(`[CreateFileUseCase] isSaved: ${JSON.stringify(isSaved)}`);
+    return this.tree;
   }
 }
