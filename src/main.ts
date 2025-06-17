@@ -18,7 +18,7 @@ function mainMenu() {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
-  });
+  }); 
 
   rl.question('Escolha uma opção: ', (answer: string) => {
     switch (answer.trim()) {

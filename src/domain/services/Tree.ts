@@ -6,7 +6,7 @@ export class Tree {
   root: Folder;
 
   constructor() {
-    this.root = new Folder('/', '/');
+    this.root = new Folder('/', '/', new Map());
   }
 
   // Busca um nó (pasta ou arquivo) pelo caminho absoluto
