@@ -1,0 +1,8 @@
+# Ignorar dependências do Node.js
+node_modules/
+
+# Ignorar arquivos de configuração do Copilot
+.github/copilot-instructions.md
+
+# Ignorar pasta de armazenamento local
+storage/
