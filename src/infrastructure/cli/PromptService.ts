@@ -8,9 +8,9 @@ export class PromptService {
     
     console.log('Contents:');
 
-    for (const [name, node] of folder.leafs) {
+    for (const [name, node] of folder.getLeafs()) {
       if ('extension' in node) {
-        console.log(`- ${name} (file)`);
+        console.log(`- ${name}.${node.extension} (file)`);
 
       } else {
         console.log(`- ${name} (folder)`);

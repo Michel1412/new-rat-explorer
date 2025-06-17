@@ -10,7 +10,7 @@ export class Tree {
   }
 
   // Busca um nó (pasta ou arquivo) pelo caminho absoluto
-  getNode(path: string): Folder | File | undefined {
+  async getNode(path: string): Promise<Folder | File | undefined> {
     console.log(`[Tree] getRoot: ${JSON.stringify(path)}`);
     if (path === '/' || path === '') 
         return this.root as Folder;
@@ -20,8 +20,8 @@ export class Tree {
 
     console.log(`[Tree] getRoot: current => ${JSON.stringify(current)}`);
     for (const part of parts) {
-      if (current instanceof Folder && current.leafs.has(part)) {
-        current = current.leafs.get(part)!;
+      if (current instanceof Folder && current.getLeafs().has(part)) {
+        current = current.getLeafs().get(part)!;
 
       } else {
         console.log(`[Tree] getRoot: undefined`);
@@ -33,34 +33,29 @@ export class Tree {
   }
 
   // Adiciona uma pasta em um caminho
-  addFolder(path: string, folder: Folder): boolean {
-    const parent = this.getNode(path);
+  async addFolder(path: string, folder: Folder): Promise<Folder> {
+    const parent: Folder = await this.getNode(path) as Folder;
 
     if (parent instanceof Folder) {
-      parent.leafs.set(folder.name, folder);
-      return true;
+      parent.getLeafs().set(folder.name, folder);
     }
 
-    return false;
+    return parent;
   }
 
   // Adiciona um arquivo em um caminho
-  async addFile(path: string, file: File): Promise<boolean> {
-    const parent = this.getNode(path);
-
-    console.log(`[Tree] addFile: ${JSON.stringify(parent)}`);
+  async addFile(path: string, file: File): Promise<Folder> {
+    const parent: Folder = await this.getNode(path) as Folder;
 
     if (parent instanceof Folder) {
-      console.log(`[Tree] addFile: ${JSON.stringify(parent)}`);
-      parent.leafs.set(file.name, file);
-      return true;
+      parent.getLeafs().set(file.name, file);
     }
 
-    return false;
+    return parent;
   }
 
   // Remove um nó pelo caminho
-  removeNode(path: string): boolean {
+  async removeNode(path: string): Promise<boolean> {
     const parts = path.split('/').filter(Boolean);
 
     if (parts.length === 0) 
@@ -68,10 +63,11 @@ export class Tree {
 
     const name = parts.pop()!;
     const parentPath = '/' + parts.join('/');
-    const parent = this.getNode(parentPath);
+    const parent = await this.getNode(parentPath);
 
-    if (parent instanceof Folder && parent.leafs.has(name)) {
-      parent.leafs.delete(name);
+    if (parent instanceof Folder && parent.getLeafs().has(name)) {
+      parent.deleteLeaf(name);
+
       return true;
     }
     
